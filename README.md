@@ -1,6 +1,6 @@
 # JSONMatch
 
-[![Go Report Card](https://goreportcard.com/report/github.com/overdone/jsonmatch)](https://goreportcard.com/report/github.com/overdone/jsonmatch)
+[![Go Report Card](https://goreportcard.com/badge/github.com/overdone/jsonmatch)](https://goreportcard.com/report/github.com/overdone/jsonmatch)
 
 A GO library for deep comparing of two JSONs.
 
