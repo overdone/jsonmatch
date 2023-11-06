@@ -1,4 +1,4 @@
-package main
+package jsonmatch
 
 import (
 	"encoding/json"
@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-var comparatorIgnoreOrder Comparator
-var comparatorWithOrder Comparator
-var comparatorSkipDepth Comparator
+var comparatorIgnoreOrder сomparator
+var comparatorWithOrder сomparator
+var comparatorSkipDepth сomparator
 
 type JsonTestSet []struct {
 	Expected bool
