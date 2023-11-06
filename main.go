@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -234,26 +233,4 @@ func getMatchError(path string) error {
 
 func NewComparator(opts CompareOptions) Comparator {
 	return Comparator{opts}
-}
-
-func main() {
-	var j1, j2, j3, j4 interface{}
-
-	s1 := `{"l2":{"l3":{"l4":"hello"}}}`
-	s2 := `{"l2":{"l3":{"l4":"bye"}}}`
-
-	// Keep in mind array adds one more level by itself
-	s3 := `{"l2":[{"l4":1},{"l4":1}]}`
-	s4 := `{"l2":[{"l4":1},{"l4":0}]}`
-
-	json.Unmarshal([]byte(s1), &j1)
-	json.Unmarshal([]byte(s2), &j2)
-	json.Unmarshal([]byte(s3), &j3)
-	json.Unmarshal([]byte(s4), &j4)
-
-	comparator := NewComparator(CompareOptions{skipDepthGreater: 3})
-	res1, _ := comparator.Compare(j1, j2)
-	res2, _ := comparator.Compare(j3, j4)
-	fmt.Println(res1)
-	fmt.Println(res2)
 }
