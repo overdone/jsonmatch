@@ -11,6 +11,13 @@ A GO library for deep comparing of two JSONs.
 ## Examples
 ### Basic
 ```go
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/overdone/jsonmatch"
+)
+
 func main() {
 	var j1, j2 interface{}
 
@@ -20,7 +27,7 @@ func main() {
 	json.Unmarshal([]byte(s1), &j1)
 	json.Unmarshal([]byte(s2), &j2)
 
-	comparator := NewComparator(CompareOptions{})
+	comparator := jsonmatch.NewComparator(jsonmatch.CompareOptions{})
 	res, _ := comparator.Compare(j1, j2)
 	fmt.Println(res)
 }
@@ -32,6 +39,13 @@ true
 ### Ignore array order
 
 ```go
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/overdone/jsonmatch"
+)
+
 func main() {
 	var j1, j2 interface{}
 
@@ -41,7 +55,7 @@ func main() {
 	json.Unmarshal([]byte(s1), &j1)
 	json.Unmarshal([]byte(s2), &j2)
 
-	comparator := NewComparator(CompareOptions{ignoreArrayOrder: true})
+	comparator := jsonmatch.NewComparator(jsonmatch.CompareOptions{IgnoreArrayOrder: true})
 	res, _ := comparator.Compare(j1, j2)
 	fmt.Println(res)
 }
@@ -52,6 +66,13 @@ true
 
 ### Ignore after depth
 ```go
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/overdone/jsonmatch"
+)
+
 func main() {
 	var j1, j2, j3, j4 interface{}
 
@@ -67,7 +88,7 @@ func main() {
 	json.Unmarshal([]byte(s3), &j3)
 	json.Unmarshal([]byte(s4), &j4)
 
-	comparator := NewComparator(CompareOptions{skipDepthGreater: 3})
+	comparator := jsonmatch.NewComparator(jsonmatch.CompareOptions{SkipDepthGreater: 3})
 	res1, _ := comparator.Compare(j1, j2)
 	res2, _ := comparator.Compare(j3, j4)
 	fmt.Println(res1)

@@ -15,20 +15,20 @@ type cardinalityMap map[interface{}]int
 type keySet map[string]struct{}
 
 type CompareOptions struct {
-	ignoreArrayOrder bool
-	skipDepthGreater int
+	IgnoreArrayOrder bool
+	SkipDepthGreater int
 }
 
-type сomparator struct {
+type JsonComparator struct {
 	opts CompareOptions
 }
 
-func (c сomparator) Compare(left interface{}, right interface{}) (bool, error) {
+func (c JsonComparator) Compare(left interface{}, right interface{}) (bool, error) {
 	return c.jsonCompare(left, right, "", 1)
 }
 
-func (c сomparator) jsonCompare(left interface{}, right interface{}, path string, depth int) (bool, error) {
-	if c.opts.skipDepthGreater != 0 && depth > c.opts.skipDepthGreater {
+func (c JsonComparator) jsonCompare(left interface{}, right interface{}, path string, depth int) (bool, error) {
+	if c.opts.SkipDepthGreater != 0 && depth > c.opts.SkipDepthGreater {
 		return true, nil
 	}
 
@@ -55,7 +55,7 @@ func (c сomparator) jsonCompare(left interface{}, right interface{}, path strin
 	}
 }
 
-func (c сomparator) compareObject(lo oJSONObject, ro oJSONObject, path string, depth int) (bool, error) {
+func (c JsonComparator) compareObject(lo oJSONObject, ro oJSONObject, path string, depth int) (bool, error) {
 	if len(lo) != len(ro) {
 		return false, getMatchError(path)
 	}
@@ -79,7 +79,7 @@ func (c сomparator) compareObject(lo oJSONObject, ro oJSONObject, path string, 
 	return true, nil
 }
 
-func (c сomparator) compareArray(la oJSONArray, ra oJSONArray, path string, depth int) (bool, error) {
+func (c JsonComparator) compareArray(la oJSONArray, ra oJSONArray, path string, depth int) (bool, error) {
 	if len(la) != len(ra) {
 		return false, getMatchError(path)
 	}
@@ -94,19 +94,19 @@ func (c сomparator) compareArray(la oJSONArray, ra oJSONArray, path string, dep
 	if isPrimitive1 != isPrimitive2 {
 		return false, getMatchError(path)
 	} else if isPrimitive1 {
-		if c.opts.ignoreArrayOrder {
+		if c.opts.IgnoreArrayOrder {
 			return comparePrimitiveArrayIgnoreOrder(la, ra, path, depth)
 		}
 		return comparePrimitiveArrayWithOrder(la, ra, path, depth)
 	}
 
-	if c.opts.ignoreArrayOrder {
+	if c.opts.IgnoreArrayOrder {
 		return c.recursiveCompareArrayIgnoreOrder(la, ra, path, depth)
 	}
 	return c.recursiveCompareArrayWithOrder(la, ra, path, depth)
 }
 
-func (c сomparator) recursiveCompareArrayIgnoreOrder(la oJSONArray, ra oJSONArray, path string, depth int) (bool, error) {
+func (c JsonComparator) recursiveCompareArrayIgnoreOrder(la oJSONArray, ra oJSONArray, path string, depth int) (bool, error) {
 	matched := make(map[int]struct{})
 
 	for j, v1 := range la {
@@ -138,7 +138,7 @@ func (c сomparator) recursiveCompareArrayIgnoreOrder(la oJSONArray, ra oJSONArr
 	return true, nil
 }
 
-func (c сomparator) recursiveCompareArrayWithOrder(la oJSONArray, ra oJSONArray, path string, depth int) (bool, error) {
+func (c JsonComparator) recursiveCompareArrayWithOrder(la oJSONArray, ra oJSONArray, path string, depth int) (bool, error) {
 	for i, v1 := range la {
 		v2 := ra[i]
 		t1 := reflect.TypeOf(v1)
@@ -231,6 +231,6 @@ func getMatchError(path string) error {
 	return fmt.Errorf("LJSON.%v not match RJSON.%v", path, path)
 }
 
-func NewComparator(opts CompareOptions) сomparator {
-	return сomparator{opts}
+func NewComparator(opts CompareOptions) JsonComparator {
+	return JsonComparator{opts}
 }
